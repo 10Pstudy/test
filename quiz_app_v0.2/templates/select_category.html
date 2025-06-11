@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}カテゴリと難易度選択{% endblock %}
+{% block content %}
+<div class="card shadow-sm fade-in">
+    <div class="card-body">
+        <h2 class="card-title">クイズカテゴリと難易度を選択</h2>
+        <form method="POST" action="{{ url_for('select_category') }}">
+            <h5>カテゴリ</h5>
+            {% for category in categories %}
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="categories" value="{{ category }}" id="cat_{{ category }}">
+                <label class="form-check-label" for="cat_{{ category }}">{{ category }}</label>
+            </div>
+            {% endfor %}
+            <h5 class="mt-4">難易度</h5>
+            {% for difficulty in difficulties %}
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="difficulties" value="{{ difficulty }}" id="diff_{{ difficulty }}">
+                <label class="form-check-label" for="diff_{{ difficulty }}">{{ difficulty }}</label>
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary mt-3">クイズを始める</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
