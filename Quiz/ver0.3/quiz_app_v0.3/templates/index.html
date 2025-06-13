@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}ホーム{% endblock %}
+{% block content %}
+<div class="index-bg">
+    <div class="card shadow-sm text-center fade-in">
+        <div class="card-body">
+            <h1 class="card-title">ITセキュリティクイズ</h1>
+            <p class="card-text">サイバーセキュリティの知識を試そう！</p>
+            <a href="{{ url_for('select_category') }}" class="btn btn-primary btn-lg">クイズを始める</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

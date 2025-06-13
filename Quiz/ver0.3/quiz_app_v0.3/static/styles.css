@@ -1,0 +1,127 @@
+body {
+    background-color: #1a1a2e; /* ダークネイビー */
+    color: #ffffff; /* 文字色を白に変更 */
+    font-family: 'Roboto Mono', monospace; /* コーディング風フォント */
+}
+
+.progress-container {
+    width: 100%;
+    background-color: #2c2c44; /* ダーク背景 */
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.2); /* ネオンシアン影 */
+    position: relative;
+}
+
+.progress-bar {
+    height: 20px;
+    background: linear-gradient(90deg, #00ffcc, #00ccff); /* ネオンシアン→ブルー */
+    border-radius: 5px;
+    transition: width 0.1s linear;
+    position: relative;
+    box-shadow: 0 0 5px #00ffcc; /* 光沢エフェクト */
+}
+
+.time-remaining {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #000; /* 黒のまま（プログレスバーとのコントラスト） */
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.card {
+    background-color: rgba(30, 30, 50, 0.85); /* 半透明ダーク */
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    color: #ffffff; /* カード内のテキストを白に */
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4); /* ネオン輝き */
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #007bff, #00ccff); /* グラデーション */
+    border: none;
+    transition: background 0.3s, transform 0.2s;
+    color: #ffffff; /* ボタンテキストを白に */
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #0056b3, #0099cc);
+    transform: scale(1.05);
+}
+
+.btn-warning {
+    background: linear-gradient(45deg, #ff9800, #ffcc00);
+    transition: background 0.3s, transform 0.2s;
+    color: #ffffff; /* ボタンテキストを白に */
+}
+
+.btn-warning:hover {
+    background: linear-gradient(45deg, #e68a00, #e6b800);
+    transform: scale(1.05);
+}
+
+.navbar {
+    background-color: #0f0f1f; /* ダークネイビー */
+    box-shadow: 0 2px 10px rgba(0, 255, 255, 0.1);
+}
+
+.navbar-brand, .nav-link {
+    color: #ffffff !important; /* ナビバーテキストを白に */
+}
+
+.alert {
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff; /* アラートテキストを白に */
+}
+
+.alert-success { border-left: 4px solid #00ffcc; }
+.alert-danger { border-left: 4px solid #ff4d4d; }
+.alert-warning { border-left: 4px solid #ffcc00; }
+
+.form-check-label, .form-check-input:checked + .form-check-label {
+    color: #ffffff; /* チェックボックスラベルを白に */
+}
+
+h1, h2, h3, h4, h5, p {
+    color: #ffffff; /* 見出しと段落を白に */
+}
+
+/* 背景画像の設定 */
+.index-bg {
+    background: url('/static/images/bg_index.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.select-bg {
+    background: url('/static/images/bg_select.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+}
+
+.quiz-bg {
+    background: url('/static/images/bg_quiz.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+}
+
+.result-bg {
+    background: url('/static/images/bg_result.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

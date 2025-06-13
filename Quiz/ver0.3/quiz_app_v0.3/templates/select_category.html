@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}カテゴリと難易度選択{% endblock %}
+{% block content %}
+<div class="select-bg">
+    <div class="container">
+        <div class="card shadow-sm fade-in">
+            <div class="card-body">
+                <h2 class="card-title">クイズカテゴリと難易度を選択</h2>
+                <form method="POST" action="{{ url_for('select_category') }}" id="category-form">
+                    <h5>カテゴリ</h5>
+                    {% for category in categories %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="categories" value="{{ category }}" id="cat_{{ category }}">
+                        <label class="form-check-label" for="cat_{{ category }}">
+                            {{ category }} ({{ category_counts.get(category, 0) }}問)
+                        </label>
+                    </div>
+                    {% endfor %}
+                    <h5 class="mt-4">難易度</h5>
+                    {% for difficulty in difficulties %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="difficulties" value="{{ difficulty }}" id="diff_{{ difficulty }}">
+                        <label class="form-check-label" for="diff_{{ difficulty }}">
+                            {{ difficulty }} ({{ difficulty_counts.get(difficulty, 0) }}問)
+                        </label>
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary mt-3">クイズを始める</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById('category-form').addEventListener('submit', function(event) {
+        const categories = document.querySelectorAll('input[name="categories"]:checked');
+        const difficulties = document.querySelectorAll('input[name="difficulties"]:checked');
+        if (categories.length === 0 || difficulties.length === 0) {
+            event.preventDefault();
+            alert('カテゴリと難易度をそれぞれ1つ以上選択してください。');
+        }
+    });
+</script>
+{% endblock %}

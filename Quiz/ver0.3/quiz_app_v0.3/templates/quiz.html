@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}クイズ {{ quiz_number }}{% endblock %}
+{% block content %}
+<div class="quiz-bg">
+    <div class="container">
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar" style="width: {{ (remaining_time_ms / 60000 * 100)|round(2) }}%;">
+                <span id="time-remaining" class="time-remaining"></span>
+            </div>
+        </div>
+        <div class="card shadow-sm fade-in">
+            <div class="card-body">
+                <h2 class="card-title">クイズ {{ quiz_number }} / {{ total_quizzes }}</h2>
+                <h4>{{ quiz.question }}</h4>
+                <form method="POST" action="{{ url_for('quiz') }}" id="answer-form">
+                    {% for option in quiz.options %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="answer" value="{{ option }}" id="{{ option }}" required>
+                        <label class="form-check-label" for="{{ option }}">{{ option }}</label>
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary mt-3">回答する</button>
+                </form>
+                <form method="POST" action="{{ url_for('quiz') }}" id="skip-form">
+                    <button type="submit" name="skip" value="skip" class="btn btn-warning mt-3 ms-2">スキップ</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='quiz.js') }}"></script>
+<script>
+    startTimer({{ remaining_time_ms }});
+</script>
+{% endblock %}

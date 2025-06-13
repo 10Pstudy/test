@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}クイズ結果{% endblock %}
+{% block content %}
+<div class="result-bg">
+    <div class="card shadow-sm text-center fade-in">
+        <div class="card-body">
+            <h2 class="card-title">クイズ結果</h2>
+            <p class="fs-5">カテゴリ：{{ categories }}</p>
+            <p class="fs-5">難易度：{{ difficulties }}</p>
+            <p class="fs-4">あなたのスコア: <strong>{{ score }} / {{ total }}</strong></p>
+            <p class="fs-5">正答率: <strong>{{ (score / total * 100)|round(2) if total > 0 else 0 }}%</strong></p>
+            <a href="{{ url_for('select_category') }}" class="btn btn-primary mt-3">別のカテゴリで挑戦</a>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">ホームに戻る</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
