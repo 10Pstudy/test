@@ -1,0 +1,448 @@
+まずファイル構成は以下のようになっています
+quiz_app
+|
+|-app.py
+|-quizzes.csv
+|-static
+|      |-quiz.js
+|      |-styles.css
+|
+|-templates
+       |-base.html
+       |-index.html
+       |-quiz.html
+       |-result.html
+       |-select_category.html
+
+
+細部が違うのでコードを書き込んでいきます
+quizzes.csv
+category,difficulty,question,option1,option2,option3,option4,answer
+"暗号化","初級","共通鍵暗号方式の特徴はどれか？","公開鍵と秘密鍵のペアを使用する","暗号化と復号に同じ鍵を使用する","デジタル署名に使用される","鍵交換が不要である","暗号化と復号に同じ鍵を使用する"
+"暗号化","初級","暗号化の主な目的はどれか？","データの機密性を保つ","データの完全性を保証する","データの可用性を高める","データの複製を作成する","データの機密性を保つ"
+"暗号化","初級","ハッシュ関数の特徴はどれか？","データを暗号化する","固定長の値を生成する","公開鍵を使用する","データの複製を作成する","固定長の値を生成する"
+"暗号化","初級","公開鍵暗号方式の例はどれか？","AES","RSA","DES","SHA-256","RSA"
+"暗号化","初級","暗号化されたデータを元に戻す操作はどれか？","ハッシング","復号","圧縮","認証","復号"
+"暗号化","初級","共通鍵暗号方式の例はどれか？","RSA","ECC","AES","SHA-1","AES"
+"暗号化","初級","暗号化において鍵の役割はどれか？","データの圧縮","データの変換規則を定義","データのバックアップ","データの監視","データの変換規則を定義"
+"暗号化","中級","公開鍵暗号方式の利点はどれか？","鍵配送が不要","処理速度が速い","鍵の長さが短い","ハッシュ値を生成する","鍵配送が不要"
+"暗号化","中級","デジタル署名に使用される主な技術はどれか？","共通鍵暗号","公開鍵暗号","ハッシュ関数","対称鍵暗号","公開鍵暗号"
+"暗号化","中級","SSL/TLSで使用される暗号化方式はどれか？","共通鍵暗号のみ","公開鍵暗号のみ","共通鍵と公開鍵の組み合わせ","ハッシュ関数のみ","共通鍵と公開鍵の組み合わせ"
+"暗号化","中級","ハッシュ関数SHA-256の出力長はどれか？","128ビット","256ビット","512ビット","1024ビット","256ビット"
+"暗号化","中級","暗号化通信でセッション鍵の役割はどれか？","データの完全性検証","一時的なデータ暗号化","公開鍵の管理","デジタル署名の生成","一時的なデータ暗号化"
+"暗号化","中級","暗号化アルゴリズムDESの鍵長はどれか？","56ビット","128ビット","256ビット","512ビット","56ビット"
+"暗号化","中級","公開鍵暗号方式で暗号化に使用する鍵はどれか？","公開鍵","秘密鍵","共通鍵","ハッシュ鍵","公開鍵"
+"暗号化","上級","デジタル署名の主な目的はどれか？","データの機密性を保つ","データの完全性を保証する","データの可用性を高める","データの暗号化を行う","データの完全性を保証する"
+"暗号化","上級","楕円曲線暗号（ECC）の特徴はどれか？","鍵長が長く処理が遅い","短い鍵長で高い安全性","共通鍵暗号方式である","ハッシュ関数として使用","短い鍵長で高い安全性"
+"暗号化","上級","暗号化における鍵管理の重要性はどれか？","処理速度の向上","鍵の漏洩防止","データの圧縮","ログの保存","鍵の漏洩防止"
+"暗号化","上級","量子コンピュータが暗号化に与える影響はどれか？","ハッシュ関数の強化","公開鍵暗号の脆弱性増加","共通鍵暗号の安全性向上","デジタル署名の簡略化","公開鍵暗号の脆弱性増加"
+"暗号化","上級","暗号化プロトコルTLSのバージョンで2025年現在推奨されるのはどれか？","TLS 1.0","TLS 1.1","TLS 1.2","TLS 1.3","TLS 1.3"
+"暗号化","上級","暗号化におけるゼロ知識証明の特徴はどれか？","データの内容を公開せずにその正しさを証明","データを完全に暗号化","公開鍵を不要にする","処理速度を向上","データの内容を公開せずにその正しさを証明"
+"認証","初級","二要素認証に該当する組み合わせはどれか？","パスワードとクレジットカード","パスワードと生体認証","ユーザーIDと秘密鍵","証明書とIPアドレス","パスワードと生体認証"
+"認証","初級","生体認証の例はどれか？","パスワード入力","ICカード","指紋認証","暗号鍵","指紋認証"
+"認証","初級","認証の主な目的はどれか？","データの暗号化","ユーザーの本人確認","データの圧縮","ネットワークの監視","ユーザーの本人確認"
+"認証","初級","パスワード認証で重要なことはどれか？","パスワードを短くする","パスワードを定期的に変更する","パスワードを公開する","パスワードを固定する","パスワードを定期的に変更する"
+"認証","初級","認証に使用される情報で「知識」に該当するのはどれか？","指紋","ICカード","パスワード","顔認証","パスワード"
+"認証","初級","認証に使用される情報で「所有」に該当するのはどれか？","パスワード","スマートカード","生体情報","IPアドレス","スマートカード"
+"認証","初級","認証方式の一つであるトークンの特徴はどれか？","一時的なコードを生成","データを暗号化","ネットワークを監視","パスワードを固定","一時的なコードを生成"
+"認証","中級","シングルサインオンの利点はどれか？","セキュリティが低下する","一度の認証で複数のシステムを利用できる","パスワードを毎回変更する必要がある","生体認証が不要になる","一度の認証で複数のシステムを利用できる"
+"認証","中級","多要素認証に含まれる要素はどれか？","知識、所有、推測","知識、所有、身体的特徴","推測、身体的特徴、環境","所有、環境、行動","知識、所有、身体的特徴"
+"認証","中級","認証プロトコルKerberosの特徴はどれか？","公開鍵暗号を使用","チケットベースの認証","ハッシュ関数の生成","データの圧縮","チケットベースの認証"
+"認証","中級","生体認証の欠点として適切なものはどれか？","処理速度が速い","偽造が不可能","誤認識の可能性がある","コストが低い","誤認識の可能性がある"
+"認証","中級","認証で使用されるCAPTCHAの目的はどれか？","データの暗号化","人間とボットの識別","ネットワーク速度の向上","パスワードの生成","人間とボットの識別"
+"認証","中級","二要素認証の例として適切なものはどれか？","パスワードとユーザーID","パスワードとSMSコード","ユーザーIDとIPアドレス","生体認証と証明書","パスワードとSMSコード"
+"認証","中級","認証におけるチャレンジレスポンス方式の特徴はどれか？","固定パスワードを使用","一時的な応答を生成","公開鍵を共有","データを圧縮","一時的な応答を生成"
+"認証","上級","OAuthの主な用途はどれか？","データの暗号化","第三者アプリケーションへのアクセス許可","ネットワークの監視","パスワードの生成","第三者アプリケーションへのアクセス許可"
+"認証","上級","フェデレーテッドID管理の特徴はどれか？","単一のシステム内での認証","複数の組織間で認証情報を共有","パスワードを固定化","生体認証を排除","複数の組織間で認証情報を共有"
+"認証","上級","認証におけるゼロトラストモデルの特徴はどれか？","全てのアクセスを信頼","継続的な認証と検証","パスワードのみで認証","ネットワークを暗号化","継続的な認証と検証"
+"認証","上級","多要素認証の導入で最も期待される効果はどれか？","処理速度の向上","セキュリティの強化","コストの削減","データの圧縮","セキュリティの強化"
+"認証","上級","生体認証で使用される「虹彩認証」の特徴はどれか？","指紋よりも低精度","目に見えない光を使用","パスワードと併用不可","処理速度が遅い","目に見えない光を使用"
+"認証","上級","認証におけるリスクベース認証の特徴はどれか？","常に同じ認証方法を使用","状況に応じて認証強度を変更","公開鍵暗号を使用","パスワードを排除","状況に応じて認証強度を変更"
+"ネットワークセキュリティ","初級","ファイアウォールが主に防ぐものは何か？","ウイルスの侵入","不正アクセス","データの暗号化","ソフトウェアのバグ","不正アクセス"
+"ネットワークセキュリティ","初級","SSL/TLSの主な役割はどれか？","通信の暗号化","ファイアウォールの設定","ウイルス検知","ログ管理","通信の暗号化"
+"ネットワークセキュリティ","初級","ネットワークセキュリティの目的はどれか？","データの圧縮","ネットワークの安全確保","ソフトウェアの開発","ハードウェアの保守","ネットワークの安全確保"
+"ネットワークセキュリティ","初級","VPN（仮想プライベートネットワーク）の主な機能はどれか？","データのバックアップ","安全な通信路の提供","ウイルスの除去","ネットワークの高速化","安全な通信路の提供"
+"ネットワークセキュリティ","初級","ポートスキャンの目的はどれか？","データの暗号化","開放されているポートの特定","ネットワーク速度の向上","ログの保存","開放されているポートの特定"
+"ネットワークセキュリティ","初級","セキュリティパッチの適用目的はどれか？","システムの高速化","脆弱性の修正","データの圧縮","ユーザー認証","脆弱性の修正"
+"ネットワークセキュリティ","初級","DMZ（非武装地帯）の役割はどれか？","内部ネットワークの保護","外部アクセスの完全遮断","暗号化通信の実施","ログの収集","内部ネットワークの保護"
+"ネットワークセキュリティ","中級","IDS（侵入検知システム）の役割はどれか？","不正アクセスの防止","不正アクセスの検知","データの暗号化","システムのバックアップ","不正アクセスの検知"
+"ネットワークセキュリティ","中級","ファイアウォールの種類で、パケットフィルタリング型が主に確認するのはどれか？","アプリケーションの内容","IPアドレスとポート番号","ユーザーの認証情報","データの整合性","IPアドレスとポート番号"
+"ネットワークセキュリティ","中級","DDoS攻撃の特徴はどれか？","単一のコンピュータからの攻撃","複数のコンピュータからの大量リクエスト","データの暗号化","パスワードの盗難","複数のコンピュータからの大量リクエスト"
+"ネットワークセキュリティ","中級","ネットワークにおけるプロキシサーバの役割はどれか？","データの暗号化","中継とアクセス制御","ウイルスの除去","ログの暗号化","中継とアクセス制御"
+"ネットワークセキュリティ","中級","WAF（Webアプリケーションファイアウォール）の主な役割はどれか？","ネットワーク全体の保護","Webアプリケーションの保護","データのバックアップ","ユーザー認証","Webアプリケーションの保護"
+"ネットワークセキュリティ","中級","ネットワークセグメンテーションの利点はどれか？","ネットワーク速度の向上","攻撃範囲の限定","データ圧縮の効率化","ログの収集","攻撃範囲の限定"
+"ネットワークセキュリティ","中級","IPsecの主な機能はどれか？","データの圧縮","セキュアな通信の確保","ウイルスの検出","ユーザー認証","セキュアな通信の確保"
+"ネットワークセキュリティ","上級","ゼロデイ攻撃の特徴はどれか？","既知の脆弱性を悪用","未知の脆弱性を悪用","パスワードを盗む","データを暗号化する","未知の脆弱性を悪用"
+"ネットワークセキュリティ","上級","ネットワークにおけるハニーポットの目的はどれか？","データの暗号化","攻撃者の誘引と監視","ネットワーク速度の向上","ユーザー認証の強化","攻撃者の誘引と監視"
+"ネットワークセキュリティ","上級","SDN（ソフトウェア定義ネットワーク）のセキュリティ上の利点はどれか？","ネットワークの固定化","柔軟なセキュリティポリシー適用","データの圧縮","ログの暗号化","柔軟なセキュリティポリシー適用"
+"ネットワークセキュリティ","上級","ネットワークにおけるMITM（中間者攻撃）の目的はどれか？","データのバックアップ","通信の傍受と改ざん","ネットワークの高速化","ユーザー認証の強化","通信の傍受と改ざん"
+"ネットワークセキュリティ","上級","EDR（エンドポイント検知と対応）の主な役割はどれか？","ネットワーク全体の監視","エンドポイントでの脅威検知と対応","データの暗号化","ログの収集","エンドポイントでの脅威検知と対応"
+"ネットワークセキュリティ","上級","ネットワークセキュリティにおけるSOARの役割はどれか？","セキュリティインシデントの自動化と対応","データの圧縮","ユーザー認証","ネットワークの高速化","セキュリティインシデントの自動化と対応"
+"マルウェア","初級","ランサムウェアの特徴はどれか？","データを暗号化して身代金を要求","システムを高速化","ネットワークを監視","パスワードを自動生成","データを暗号化して身代金を要求"
+"マルウェア","初級","トロイの木馬の特徴はどれか？","単独で増殖","正規のソフトを装う","ネットワークを遮断","ハードウェアを破壊","正規のソフトを装う"
+"マルウェア","初級","マルウェアの主な目的はどれか？","データのバックアップ","システムやデータの破壊・窃取","ネットワークの高速化","ユーザー認証の強化","システムやデータの破壊・窃取"
+"マルウェア","初級","スパイウェアの主な動作はどれか？","データを暗号化","ユーザー情報を収集","システムを高速化","ネットワークを監視","ユーザー情報を収集"
+"マルウェア","初級","ワームとウイルスの違いはどれか？","ワームは単独で増殖","ウイルスは単独で増殖","ワームはハードウェアを攻撃","ウイルスはネットワークを監視","ワームは単独で増殖"
+"マルウェア","初級","ウイルス対策ソフトの主な機能はどれか？","データの圧縮","マルウェアの検出と駆除","ネットワークの高速化","パスワードの生成","マルウェアの検出と駆除"
+"マルウェア","初級","マルウェア感染を防ぐ基本的な対策はどれか？","ソフトウェアを常に最新に保つ","パスワードを公開する","未知のメールを開く","ネットワークを暗号化","ソフトウェアを常に最新に保つ"
+"マルウェア","中級","アドウェアの特徴はどれか？","データを暗号化","広告を無許可で表示","ネットワークを遮断","パスワードを盗む","広告を無許可で表示"
+"マルウェア","中級","キーロガーの主な目的はどれか？","キーボード入力を記録","システムを高速化","データを圧縮","ネットワークを監視","キーボード入力を記録"
+"マルウェア","中級","ルートキットの特徴はどれか？","システムに隠れて権限を取得","広告を表示","データを暗号化","ネットワークを高速化","システムに隠れて権限を取得"
+"マルウェア","中級","ボットネットの特徴はどれか？","単一のコンピュータを攻撃","複数の感染デバイスを遠隔制御","データをバックアップ","パスワードを生成","複数の感染デバイスを遠隔制御"
+"マルウェア","中級","マルウェアの感染経路として一般的なものはどれか？","公式サイトの更新","メールの添付ファイル","データの暗号化","ネットワークの監視","メールの添付ファイル"
+"マルウェア","中級","フィッシング攻撃とマルウェアの関係はどれか？","フィッシングはマルウェアを直接配布","フィッシングはマルウェア感染の入口","フィッシングはデータを暗号化","フィッシングはネットワークを高速化","フィッシングはマルウェア感染の入口"
+"マルウェア","中級","マルウェアの駆除で重要なことはどれか？","システムの再起動","ウイルス対策ソフトの更新とスキャン","ネットワークの切断のみ","パスワードの公開","ウイルス対策ソフトの更新とスキャン"
+"マルウェア","上級","ゼロデイ攻撃を利用するマルウェアの特徴はどれか？","既知の脆弱性を悪用","未知の脆弱性を悪用","データを圧縮","ネットワークを公開","未知の脆弱性を悪用"
+"マルウェア","上級","ファイルレスマルウェアの特徴はどれか？","ディスクにファイルを保存","メモリ上で動作","ネットワークを暗号化","パスワードを生成","メモリ上で動作"
+"マルウェア","上級","マルウェアのC&Cサーバーの役割はどれか？","データの暗号化","感染デバイスへの指示送信","ネットワークの高速化","ユーザー認証","感染デバイスへの指示送信"
+"マルウェア","上級","APT（持続的標的型攻撃）の特徴はどれか？","短期間の攻撃","特定ターゲットへの長期的な潜伏","データの圧縮","ネットワークの公開","特定ターゲットへの長期的な潜伏"
+"マルウェア","上級","マルウェア対策としてのサンドボックスの役割はどれか？","マルウェアの動作を隔離環境で分析","データを暗号化","ネットワークを監視","パスワードを生成","マルウェアの動作を隔離環境で分析"
+"マルウェア","上級","マルウェアのポリモーフィックウイルスの特徴はどれか？","コードを自己変形","データをバックアップ","ネットワークを高速化","ユーザー認証を強化","コードを自己変形"
+
+app.py
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+import csv
+import os
+import random
+from datetime import datetimeapp = Flask(__name__)
+app.secret_key = 'your_secret_key'# CSVファイルからクイズデータを読み込む
+def load_quizzes():
+    quizzes = []
+    csv_file_path = os.path.join(os.path.dirname(__file__), 'quizzes.csv')
+    try:
+        with open(csv_file_path, newline='', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                quiz = {
+                    'category': row['category'],
+                    'difficulty': row['difficulty'],
+                    'question': row['question'],
+                    'options': [row['option1'], row['option2'], row['option3'], row['option4']],
+                    'answer': row['answer']
+                }
+                quizzes.append(quiz)
+    except FileNotFoundError:
+        flash('quizzes.csvが見つかりません。', 'error')
+        return []
+    except Exception as e:
+        flash(f'CSV読み込みエラー: {e}', 'error')
+        return []
+    return quizzes# カテゴリと難易度を取得
+def get_categories_and_difficulties(quizzes):
+    categories = sorted(set(quiz['category'] for quiz in quizzes))
+    difficulties = sorted(set(quiz['difficulty'] for quiz in quizzes))
+    return categories, difficulties@app.route('/')
+def index():
+    session.clear()
+    return render_template('index.html')@app.route('/select_category', methods=['GET', 'POST'])
+def select_category():
+    quizzes = load_quizzes()
+    if not quizzes:
+        return redirect(url_for('index'))
+
+categories, difficulties = get_categories_and_difficulties(quizzes)
+
+if request.method == 'POST':
+    selected_categories = request.form.getlist('categories')
+    selected_difficulties = request.form.getlist('difficulties')
+    if not selected_categories or not selected_difficulties:
+        flash('カテゴリと難易度をそれぞれ1つ以上選択してください。', 'error')
+        return redirect(url_for('select_category'))
+    if all(cat in categories for cat in selected_categories) and all(diff in difficulties for diff in selected_difficulties):
+        session['selected_categories'] = selected_categories
+        session['selected_difficulties'] = selected_difficulties
+        filtered_quizzes = [
+            q for q in quizzes 
+            if q['category'] in selected_categories and q['difficulty'] in selected_difficulties
+        ]
+        if not filtered_quizzes:
+            flash('選択したカテゴリと難易度にクイズがありません。', 'error')
+            return redirect(url_for('select_category'))
+        quiz_indices = list(range(len(filtered_quizzes)))
+        random.shuffle(quiz_indices)
+        session['quiz_indices'] = quiz_indices
+        session['filtered_quizzes'] = filtered_quizzes
+        session['score'] = 0
+        session['current_quiz'] = 0
+        session['remaining_time_ms'] = 60 * 1000
+        session['start_time'] = datetime.now().isoformat()
+        return redirect(url_for('quiz'))
+    else:
+        flash('無効なカテゴリまたは難易度が選択されました。', 'error')
+
+return render_template('select_category.html', categories=categories, difficulties=difficulties)
+
+@app.route('/quiz', methods=['GET', 'POST'])
+def quiz():
+    if 'selected_categories' not in session or 'quiz_indices' not in session or 'filtered_quizzes' not in session or 'remaining_time_ms' not in session:
+        return redirect(url_for('select_category'))
+
+quizzes = session['filtered_quizzes']
+if not quizzes:
+    flash('クイズデータがありません。', 'error')
+    return redirect(url_for('index'))
+
+if session['remaining_time_ms'] <= 0:
+    return redirect(url_for('result'))
+
+current_quiz = session['current_quiz']
+quiz_indices = session['quiz_indices']
+
+if current_quiz >= len(quizzes):
+    return redirect(url_for('result'))
+
+current_quiz_index = quiz_indices[current_quiz]
+current_quiz_data = quizzes[current_quiz_index].copy()
+
+options = current_quiz_data['options'].copy()
+random.shuffle(options)
+current_quiz_data['options'] = options
+
+if request.method == 'POST':
+    user_answer = request.form.get('answer')
+    correct_answer = quizzes[current_quiz_index]['answer']
+    
+    if user_answer == correct_answer:
+        session['score'] += 1
+        session['remaining_time_ms'] += 10 * 1000
+        flash('正解！+10秒追加', 'success')
+    else:
+        session['remaining_time_ms'] = max(0, session['remaining_time_ms'] - 20 * 1000)
+        flash('不正解。-20秒', 'error')
+    
+    session['current_quiz'] += 1
+    
+    if session['current_quiz'] >= len(quizzes) or session['remaining_time_ms'] <= 0:
+        return redirect(url_for('result'))
+    return redirect(url_for('quiz'))
+
+return render_template('quiz.html', 
+                     quiz=current_quiz_data, 
+                     quiz_number=current_quiz + 1,
+                     total_quizzes=len(quizzes),
+                     remaining_time_ms=session['remaining_time_ms'])
+
+@app.route('/result')
+def result():
+    score = session.get('score', 0)
+    total = len(session.get('filtered_quizzes', []))
+    categories = ', '.join(session.get('selected_categories', ['不明']))
+    difficulties = ', '.join(session.get('selected_difficulties', ['不明']))
+    return render_template('result.html', score=score, total=total, categories=categories, difficulties=difficulties)if __name__ == '__main__':
+    app.run(debug=True)
+
+quiz.js
+function startTimer(remainingTimeMs) {
+    const progressBar = document.getElementById('progress-bar');
+    const timeRemaining = document.getElementById('time-remaining');
+    const startTime = Date.now();
+    const initialTime = remainingTimeMs;
+
+const updateProgress = () => {
+    const elapsed = Date.now() - startTime;
+    const remaining = Math.max(0, initialTime - elapsed);
+    const percentage = (remaining / initialTime) * 100;
+    progressBar.style.width = percentage + '%';
+
+    // 残り秒数を表示
+    const seconds = Math.ceil(remaining / 1000);
+    timeRemaining.textContent = `残り: ${seconds}秒`;
+
+    // 色を変更
+    if (percentage > 50) {
+        progressBar.style.backgroundColor = '#4caf50';
+    } else if (percentage > 20) {
+        progressBar.style.backgroundColor = '#ff9800';
+    } else {
+        progressBar.style.backgroundColor = '#f44336';
+    }
+
+    if (remaining <= 0) {
+        window.location.href = '/result';
+    } else {
+        setTimeout(updateProgress, 100);
+    }
+};
+
+updateProgress();
+
+}
+
+styles.css
+body {
+    background-color: #f8f9fa;
+}.progress-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}.progress-bar {
+    height: 20px;
+    background-color: #4caf50;
+    border-radius: 5px;
+    transition: width 0.1s linear;
+    position: relative;
+}.time-remaining {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}.card {
+    border-radius: 10px;
+    transition: transform 0.2s;
+}.card:hover {
+    transform: translateY(-5px);
+}.btn-primary {
+    background-color: #007bff;
+    border: none;
+    transition: background-color 0.3s;
+}.btn-primary:hover {
+    background-color: #0056b3;
+}.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}.alert {
+    border-radius: 5px;
+}
+
+base.html
+<!DOCTYPE html><html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} - クイズアプリ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('index') }}">クイズアプリ</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('select_category') }}">クイズ開始</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+index.html
+{% extends 'base.html' %}
+{% block title %}ホーム{% endblock %}
+{% block content %}<div class="card shadow-sm text-center fade-in">
+    <div class="card-body">
+        <h1 class="card-title">ITパスポート セキュリティクイズ</h1>
+        <p class="card-text">カテゴリを選んでクイズに挑戦しましょう！</p>
+        <a href="{{ url_for('select_category') }}" class="btn btn-primary btn-lg">クイズを始める</a>
+    </div>
+</div>
+{% endblock %}
+
+quiz.html
+{% extends 'base.html' %}
+{% block title %}クイズ {{ quiz_number }}{% endblock %}
+{% block content %}<div class="progress-container">
+    <div class="progress-bar" id="progress-bar" style="width: {{ (remaining_time_ms / 60000 * 100)|round(2) }}%;">
+        <span id="time-remaining" class="time-remaining"></span>
+    </div>
+</div>
+<div class="card shadow-sm fade-in">
+    <div class="card-body">
+        <h2 class="card-title">クイズ {{ quiz_number }} / {{ total_quizzes }}</h2>
+        <h4>{{ quiz.question }}</h4>
+        <form method="POST" action="{{ url_for('quiz') }}">
+            {% for option in quiz.options %}
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="answer" value="{{ option }}" id="{{ option }}" required>
+                <label class="form-check-label" for="{{ option }}">{{ option }}</label>
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary mt-3">回答する</button>
+        </form>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='quiz.js') }}"></script>
+<script>
+    startTimer({{ remaining_time_ms }});
+</script>
+{% endblock %}
+
+result.html
+{% extends 'base.html' %}
+{% block title %}クイズ結果{% endblock %}
+{% block content %}<div class="card shadow-sm text-center fade-in">
+    <div class="card-body">
+        <h2 class="card-title">クイズ結果</h2>
+        <p class="fs-5">カテゴリ：{{ categories }}</p>
+        <p class="fs-5">難易度：{{ difficulties }}</p>
+        <p class="fs-4">あなたのスコア: <strong>{{ score }} / {{ total }}</strong></p>
+        <p class="fs-5">正答率: <strong>{{ (score / total * 100)|round(2) if total > 0 else 0 }}%</strong></p>
+        <a href="{{ url_for('select_category') }}" class="btn btn-primary mt-3">別のカテゴリで挑戦</a>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">ホームに戻る</a>
+    </div>
+</div>
+{% endblock %}
+
+select_category.html
+{% extends 'base.html' %}
+{% block title %}カテゴリと難易度選択{% endblock %}
+{% block content %}<div class="card shadow-sm fade-in">
+    <div class="card-body">
+        <h2 class="card-title">クイズカテゴリと難易度を選択</h2>
+        <form method="POST" action="{{ url_for('select_category') }}">
+            <h5>カテゴリ</h5>
+            {% for category in categories %}
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="categories" value="{{ category }}" id="cat_{{ category }}">
+                <label class="form-check-label" for="cat_{{ category }}">{{ category }}</label>
+            </div>
+            {% endfor %}
+            <h5 class="mt-4">難易度</h5>
+            {% for difficulty in difficulties %}
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="difficulties" value="{{ difficulty }}" id="diff_{{ difficulty }}">
+                <label class="form-check-label" for="diff_{{ difficulty }}">{{ difficulty }}</label>
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary mt-3">クイズを始める</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+
+
